@@ -164,13 +164,24 @@ jobs:
       env:
         CMAKE_BUILD_TYPE: "Debug"
       run: |
-        cmake --build "build/ci" --config ${{ env.CMAKE_BUILD_TYPE }} --target StreamFX
+        cmake --build "build/ci" --config ${{ env.CMAKE_BUILD_TYPE }} --target install
     - name: "Build: Release"
       shell: bash
       env:
         CMAKE_BUILD_TYPE: "RelWithDebInfo"
       run: |
-        cmake --build "build/ci" --config ${{ env.CMAKE_BUILD_TYPE }} --target StreamFX
+        cmake --build "build/ci" --config ${{ env.CMAKE_BUILD_TYPE }} --target install
+    
+    - name: "Packaging"
+      shell: cmd
+      run : |
+        "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /V10 ".\build\ci\installer.iss"
+        
+    - name: "Artifacts"
+      uses: actions/upload-artifact@v3
+      with:
+        name: "${{ matrix.runner }}-${{ matrix.generator }}-qt${{ matrix.qt }}"
+        path: "${{ github.workspace }}/build/package"
 
   macos:
     strategy:
