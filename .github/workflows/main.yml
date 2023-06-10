@@ -181,7 +181,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: "${{ matrix.runner }}-${{ matrix.generator }}-qt${{ matrix.qt }}"
-        path: "${{ github.workspace }}/build/package"
+        path: "${{ github.workspace }}/build/ci"
 
   macos:
     strategy:
